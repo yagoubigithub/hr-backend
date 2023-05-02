@@ -3,6 +3,7 @@ const mongoose = require("mongoose");
 const crypto = require('crypto');
 const uuidv1 = require('uuid').v1;
 
+const     ObjectId =  mongoose.Schema.ObjectId;
 
 const UserSchema = new mongoose.Schema({
   
@@ -31,7 +32,8 @@ const UserSchema = new mongoose.Schema({
         required : true,
         default :  1
        
-    }
+    },
+    managerId :  { type : ObjectId, ref: 'User' }
   
 ,
     hashed_password : {

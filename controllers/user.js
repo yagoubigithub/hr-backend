@@ -1,8 +1,11 @@
-const User = require("../models/User");
+const User = require("../models/user");
 const { errorHandler } = require("../helpers/dbErrorHandler");
 
 const jwt = require("jsonwebtoken"); //to generate sign token
 const expressJwt = require("express-jwt"); // for authorization
+
+const ObjectId = require('mongodb').ObjectId; 
+
 
 exports.signup = (req, res) => {
   const user = new User(req.body);
@@ -25,8 +28,8 @@ exports.signup = (req, res) => {
     res.cookie("t", token, { expire: new Date() + 9999 });
     // return token and user to frontend client
 
-    const { _id, name, email, role } = user;
-    return res.json({ token, user: { _id, name, email, role } });
+    const { _id, name, email, role , managerId } = user;
+    return res.json({ token, user: { _id, name, email, role , managerId } });
   });
 };
 
@@ -36,6 +39,7 @@ exports.signin = (req, res) => {
 
   User.findOne({ email }, (err, user) => {
     if (err || !user) {
+      console.log(err)
       return res.status(400).json({
         error: "User with that email doesn't exist.",
       });
@@ -84,6 +88,20 @@ exports.isAuth = (req, res, next) => {
   next();
 };
 
+exports.getAllUsers = async (req, res) => {
+
+  const users = await User .find( ).populate("managerId")
+  res.status(200).json(users );
+};
+
+exports.getUserById = async (req, res) => {
+
+  
+  console.log(req.params.userId)
+  let o_id = new ObjectId(req.params.userId);   
+  const user = await User .findOne( {"_id" : o_id})
+  res.status(200).json(user );
+};
 exports.isAdmin = (req, res, next) => {
   if (req.profile.role === 0) {
     return res.status(403).json({
