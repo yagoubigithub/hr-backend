@@ -22,7 +22,7 @@ const server = require('http').createServer(app);
 
 
 
-mongoose.connect(process.env.MONGO_URL_DEV,{
+mongoose.connect(process.env.MONGO_URL,{
 
     useNewUrlParser : true
 }).then(()=>{
