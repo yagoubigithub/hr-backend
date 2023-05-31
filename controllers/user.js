@@ -1,4 +1,4 @@
-const User = require("../models/User");
+const User = require("../models/user");
 const { errorHandler } = require("../helpers/dbErrorHandler");
 
 const jwt = require("jsonwebtoken"); //to generate sign token
@@ -61,8 +61,8 @@ exports.signin = (req, res) => {
     res.cookie("t", token, { expire: new Date() + 9999 });
     // return token and user to frontend client
 
-    const { _id, firstname , lastname , username, email, role } = user;
-    return res.json({ token, user: { _id, firstname , lastname , username, email, role } });
+    const { _id, firstname , lastname , username, email, role , managerId } = user;
+    return res.json({ token, user: { _id, firstname , lastname , username, email, role , managerId } });
   });
 };
 

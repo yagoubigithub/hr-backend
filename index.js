@@ -22,7 +22,7 @@ const server = require('http').createServer(app);
 
 
 
-mongoose.connect(process.env.MONGO_URL,{
+mongoose.connect(process.env.MONGO_URL_DEV,{
 
     useNewUrlParser : true
 }).then(()=>{
@@ -39,7 +39,7 @@ const requestRoutes = require("./routes/requests")
 
 
 //midelwares
-app.use(cors());
+app.use(cors({ origin: true }));
 
 app.use(express.json({ extended: false, limit: '50mb' }))
 app.use(express.urlencoded({ limit: '50mb', extended: false, parameterLimit: 50000 }))
@@ -53,9 +53,7 @@ app.use(morgan("common"));
 //routes midelware
 
 
-app.get("/" ,  (req , res)=>{
-    res.send("Hello wolrd")
-})
+
 app.use("/api/users",userRoutes)
 app.use("/api/requests",requestRoutes)
 
